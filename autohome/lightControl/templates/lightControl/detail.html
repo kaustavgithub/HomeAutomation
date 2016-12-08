@@ -1,0 +1,50 @@
+{% extends 'lightControl/base.html' %}
+{% block title %}Switches{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <img src="{{ room.room_logo }}" width="150px" height="150px" />
+        </div>
+        <div class="col-sm-4">
+            <h1>{{ room }}-</h1>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    {% if error_message %}
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <p><strong>{{ error_message }}</strong></p>  
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Switches</div>
+                <div class="panel-body">
+                    {% for switch in room.switch_set.all %}
+                        
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="thumbnail">
+                                {% if switch.status %}
+                                    <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }} <img src="http://www.clker.com/cliparts/R/k/a/d/3/5/led-green-hi.png" height="32px" width="32px"></a> </strong></p>
+                                {% else %}
+                                    <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }} <img src="http://www.clker.com/cliparts/M/h/R/9/8/H/red-led-on-md.png" height="32px" width="32px"> </a></strong></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
+{% endblock %}

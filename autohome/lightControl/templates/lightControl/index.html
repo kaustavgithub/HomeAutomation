@@ -1,0 +1,26 @@
+{% extends 'lightControl/base.html' %}
+
+{% block body %}
+    <div class="col-sm-2"></div>
+    {% if all_rooms %}
+        <ul>
+            {% for room in all_rooms %}
+            <div class="col-sm-4 col-lg-2">
+                <div class="thumbnail">
+                    <a href="{% url 'lightControl:detail' room.id %}">
+                        <img src="{{ room.room_logo }}" class="img-responsive" alt="ROOM Image" width="150" height="150" />
+                    </a>
+                    <div class="caption">
+                        <h2>{{ room.rname }}</h2>
+                        <h4>{{ room.rown }}</h4>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>There is no room created</h3>
+    {% endif %}
+    </div>
+    <div class="col-sm-2"></div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'lightControl/base.html' %}
+
+{% block body %}
+    {% if all_switches %}
+        <ul>
+            {% for switch in all_switches %}
+            <div class="col-sm-4 col-lg-2">
+                <div class="thumbnail">
+                    {% if switch.status %}
+                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }} - <img src="http://www.clker.com/cliparts/R/k/a/d/3/5/led-green-hi.png" height="32px" width="32px"></a> </strong></p>
+                    {% else %}
+                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }}- <img src="http://www.clker.com/cliparts/M/h/R/9/8/H/red-led-on-md.png" height="32px" width="32px"> </a></strong></p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>There is no switch created</h3>
+    {% endif %}
+{% endblock %}
