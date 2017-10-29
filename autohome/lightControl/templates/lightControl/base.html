@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>{% block title %}AutomationHome{% endblock %}</title>
     {% load staticfiles %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    
+    <script src="{% static 'lightControl/js/jquery-3.2.1.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'lightControl/bootstrap-3.3.7/css/bootstrap.min.css' %}"/>
+    <script src="{% static 'lightControl/bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+
     <link rel="stylesheet" type="text/css" href="{% static 'lightControl/style.css' %}"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width">
 </head>
 <body>
