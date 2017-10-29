@@ -1,4 +1,5 @@
 {% extends 'lightControl/base.html' %}
+{% load staticfiles %}
 
 {% block body %}
     {% if all_switches %}
@@ -7,9 +8,9 @@
             <div class="col-sm-4 col-lg-2">
                 <div class="thumbnail">
                     {% if switch.status %}
-                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }} - <img src="http://www.clker.com/cliparts/R/k/a/d/3/5/led-green-hi.png" height="32px" width="32px"></a> </strong></p>
+                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }} - <img src="{% static 'lightControl/images/blue.png' %}" height="32px" width="32px"></a> </strong></p>
                     {% else %}
-                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }}- <img src="http://www.clker.com/cliparts/M/h/R/9/8/H/red-led-on-md.png" height="32px" width="32px"> </a></strong></p>
+                        <p><strong> <a href="{% url 'lightControl:switch-update' switch.id %}">{{ switch }}- <img src="{% static 'lightControl/images/green.png' %}" height="32px" width="32px"> </a></strong></p>
                     {% endif %}
                 </div>
             </div>
