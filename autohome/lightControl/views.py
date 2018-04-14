@@ -6,6 +6,83 @@ from django.views.generic import View
 from .models import Room, Switch
 from GPIOSwitch import setup, GPIOSwitch
 
+from django.conf import settings
+
+import time,threading
+
+
+def performThread(switch_id, timerType, duration):
+    TIMER_DICT = getattr(settings, "TIMER_DICT", None)
+    if (switch_id, timerType) in TIMER_DICT:
+        timerThread = TIMER_DICT[(switch_id, timerType)]
+    else:
+        timerThread = setTimer(switch_id, timerType, duration)
+        TIMER_DICT[(switch_id, timerType)] = onThread
+
+    if(timerThread.isAlive()):
+        if(duration==0):
+            timerThread.stop()
+        else:
+            timerThread.changeDuration(duration)
+    else:
+        timerThread.start()
+
+
+def setOnTimer(switch_id, duration):
+    timerType = 'ON'
+    performThread(switch_id, timerType, duration)
+
+
+def setOffTimer(switch_id, timerType, duration):
+    timerType = 'OFF'
+    performThread(switch_id, timerType, duration)
+
+
+class setTimer(threading.Thread):
+    def __init__(self, switch_id, timerType, duration):
+        self.switch_id = switch_id
+        self.timerType = timerType
+        self.duration = duration * 60
+        self._stop_event = threading.Event()
+        self._durationCount = 0
+
+    def stop(self):
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
+
+    def changeDuration(self, duration):
+        self.duration = duration
+
+    def run(self):
+        while(not self.stopped()):
+            time.sleep(1)
+            if (self._durationCount>=self.duration):
+                switch = Switch.objects.get(pk=self.switch_id)
+                room = switch.room
+                gpioSwitch = GPIOSwitch(switch.gpio_pin)
+
+                if self.timerType=='OFF':
+                    gpioSwitch.off()
+                    switch.status = False
+                else:
+                    gpioSwitch.on()
+                    switch.status = True
+                switch.save()
+                break
+            else:
+                self._durationCount += 1
+
+
+
+def setOffTimer(request, switch_id):
+    switch = Switch.objects.get(pk=switch_id)
+    room = switch.room
+    gpioSwitch = GPIOSwitch(switch.gpio_pin)
+
+    return redirect('lightControl:detail', pk=room.id)
+
 
 def changeSwitchStatus(request, switch_id):
     switch = Switch.objects.get(pk=switch_id)
@@ -13,11 +90,11 @@ def changeSwitchStatus(request, switch_id):
     gpioSwitch = GPIOSwitch(switch.gpio_pin)
     
     if gpioSwitch.getState():
-	gpioSwitch.off()
-	switch.status = False
+        gpioSwitch.off()
+        switch.status = False
     else:
-	gpioSwitch.on()
-	switch.status = True
+        gpioSwitch.on()
+        switch.status = True
     switch.save()
 
     return redirect('lightControl:detail', pk=room.id)
