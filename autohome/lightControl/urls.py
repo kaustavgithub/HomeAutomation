@@ -15,6 +15,9 @@ urlpatterns = [
 
     url(r'^switches/$', views.SwitchView.as_view(), name='switches'),
 
+    url(r'^rest/api/rooms$', views.room_list),
+    url(r'^rest/api/switches$', views.switch_list),
+    url(r'^rest/api/switch_status$', views.switch_status),
+    url(r'^rest/api/change$', views.updateSwitchStatus),
+
 ]
-
-

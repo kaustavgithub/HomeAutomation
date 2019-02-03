@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 class Room(models.Model):
     rtype = models.CharField(max_length=100)
