@@ -1,5 +1,8 @@
 #!/usr/bin/python
-import RPi.GPIO as GPIO
+try:
+	import RPi.GPIO as GPIO
+except:
+	from EmulatorGUI import GPIO
 
 def setup():
 	GPIO.cleanup()
@@ -24,5 +27,4 @@ class GPIOSwitch():
 	def __str__(self):
 		status = "on" if self.getState() else "off"
 		return "pin: %s, status: %s" % (str(self.pin_no), status)
-
 
